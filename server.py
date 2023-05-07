@@ -4,27 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 import sys
 import subprocess
-
-
-# 업로드 이미지 경로 처리 함수
-def run_image_processing(image_path):
-    script_path = "image_processing.py"
-    result = subprocess.run(
-        [sys.executable, script_path, image_path], capture_output=True, text=True
-    )
-    return result.stdout
-
-
-# 퍼스널컬러 진단 코드 실행 함수
-def run_main_py(image_path):
-    script_path = "main.py"
-    result = subprocess.run(
-        [sys.executable, script_path, "--image", image_path],
-        capture_output=True,
-        text=True,
-        cwd="src",  # 작업 디렉토리 설정
-    )
-    return result.stdout
+from src.personal_color_analysis import personal_color
 
 
 app = Flask(__name__)
@@ -32,6 +12,11 @@ CORS(app, resources={r"*": {"origins": "*"}})
 
 app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["ALLOWED_EXTENSIONS"] = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
+
+
+def main():
+    imgpath = "/upload/5.jpg"
+    analysis(imgpath)
 
 
 def allowed_file(filename):
@@ -54,7 +39,8 @@ def upload_file():
             file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(file_path)
 
-            result = run_main_py(file_path)
+            result = personal_color(file_path)
+            print(result)
             return jsonify(
                 {
                     "message": "File uploaded and processed successfully",
