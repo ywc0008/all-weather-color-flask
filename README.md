@@ -1,4 +1,5 @@
-VScode 기준
+## 실행방법
+### VScode 기준
 터미널 두개 켜서 각각에
 python server.py (디렉토리 위치 server.py 위치여야함)
 npm start (디렉토리 위치 package.json위치여야함)
