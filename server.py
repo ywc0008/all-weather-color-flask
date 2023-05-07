@@ -17,21 +17,20 @@ def run_image_processing(image_path):
 
 # 퍼스널컬러 진단 코드 실행 함수
 def run_main_py(image_path):
-    script_path = "src/main.py"
+    script_path = "main.py"
     result = subprocess.run(
         [sys.executable, script_path, "--image", image_path],
         capture_output=True,
         text=True,
+        cwd="src",  # 작업 디렉토리 설정
     )
-    if result.returncode != 0:
-        return {"error": result.stderr}
     return result.stdout
 
 
 app = Flask(__name__)
 CORS(app, resources={r"*": {"origins": "*"}})
 
-app.config["UPLOAD_FOLDER"] = "uploads/"
+app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["ALLOWED_EXTENSIONS"] = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
 
 
@@ -67,4 +66,4 @@ def upload_file():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)

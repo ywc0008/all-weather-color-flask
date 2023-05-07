@@ -5,16 +5,6 @@ import subprocess
 import sys
 
 
-def run_image_processing(image_path):
-    script_path = "image_processing.py"
-    result = subprocess.run(
-        [sys.executable, script_path, image_path], capture_output=True, text=True
-    )
-    print(f"Processing image: {image_path}")
-
-    return result.stdout
-
-
 def main():
     # 인자값 받을 인스턴스 생성
     parser = argparse.ArgumentParser(description="Please input your image.")
